@@ -1,21 +1,32 @@
+import React from "react";
+import ReactDOM from "react-dom/client";
 
-const parent=React.createElement("div",{id:"parent"},
-React.createElement("div",{id:"child"},
-React.createElement("h1",
-{},"I'm an h1 tag "
-)))
+// React Element are simply objects 
+// React.createElement => Object => HTMLElement(render)
+
+  // JSX is a syntax like HTML
+  // this is ReactElement
+  const title =  (
+  <h1 id="heading" tabIndex="3"> 
+  Namaste React using JSX
+  </h1>
+  );
+
+  const number=1000;
+  // React Functional Component
+
+  //component composition 
+  const HeadingComponent= ()=>(
+    <div id="container">
+      {title}
+      <h2>{number}</h2>
+      <h1>Namaste React Functional Component</h1>
+    </div>
+  );
 
 
 
 
-
-const heading=React.createElement("h1",
-{
-  id:"heading",
-  xyz:"abc"
-},
-"HEllo form react!");
 const root=ReactDOM.createRoot(document.getElementById("root"));
 
-console.log(parent);// object
-root.render(parent);
+root.render(<HeadingComponent/>);
