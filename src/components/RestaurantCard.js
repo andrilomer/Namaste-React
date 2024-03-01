@@ -10,7 +10,7 @@ const RestaurantCard = (props) => {
     avgRating,
     costForTwo,
     // deliveryTime,
-  } = resData?.data;
+  } = resData?.info;
 
   // console.log(props);
   return (
@@ -24,7 +24,7 @@ const RestaurantCard = (props) => {
       <h3>{name}</h3>
       <h4>{cuisines.join(",")}</h4>
       <h4>{avgRating}</h4>
-      <h4>{costForTwo/100} </h4>
+      <h4>{costForTwo}</h4>
     </div>
   );
 };
