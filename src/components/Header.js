@@ -1,11 +1,15 @@
 import { LOGO_URL } from "../utils/constants";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 
 const Header= () => {
   // let btnName="LogIn";
+  console.log("Header rendered");
 
   const[btnNameReact,setbtnNameReact]=useState("LogIn");
 
+  useEffect(()=>{
+    console.log("useEffect is called");
+  },[btnNameReact]);
 
   return (
     <div className="header">
