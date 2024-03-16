@@ -14,19 +14,34 @@ const RestaurantCard = (props) => {
 
   // console.log(props);
   return (
-    <div className="res-card">
+    <div className="m-4 p-4 w-[255px] bg-gray-100 rounded-lg hover:bg-blue-100">
       <img 
-       className="res-logo"
+       className="rounded-lg"
        alt="res-logo"
        src={ CDN_URL +
        cloudinaryImageId}
        /> 
-      <h3>{name}</h3>
+      <h3 className="font-bold py-4 text-lg">{name}</h3>
       <h4>{cuisines.join(",")}</h4>
       <h4>{avgRating}</h4>
       <h4>{costForTwo}</h4>
     </div>
   );
+};
+
+//Higher order component
+
+// input -RestaurantCard=> RestaurantCardVeg
+
+export const withVegLabel= (RestaurantCard)=>{
+  return (props)=>{
+    return (
+      <div>
+        <label className="absolute bg-gray-700 text-white ml-4 p-3 mt-2 rounded-lg" >Veg</label>
+        <RestaurantCard {...props}/>
+      </div>
+    );
+  };
 };
 
 

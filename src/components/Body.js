@@ -1,8 +1,9 @@
-import RestaurantCard from "./RestaurantCard";
+import RestaurantCard,{withVegLabel} from "./RestaurantCard";
 import { useState,useEffect } from "react";
 import resList from "../utils/mockData";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
+import useOnlineStatus from "../utils/useOnlineStatus";
 
 const Body = () => {
 
@@ -10,7 +11,11 @@ const Body = () => {
   const [filteredRestaurant,setFilteredRestaurant]=useState([]);
 
   const [searchText,setSearchText ]=useState("");
-  // console.log("printed");
+  // console.log(listOfRestaurants);
+
+  const RestaurantCardVeg=withVegLabel(RestaurantCard);
+
+
 
   useEffect(()=>{
     fetchData();
@@ -22,9 +27,19 @@ const Body = () => {
       );
     const json=await data.json();
 
-    console.log(json?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
-    setListOfRestaurants(json?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
-    setFilteredRestaurant(json?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
+    console.log(json?.data?.cards[3]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
+    setListOfRestaurants(json?.data?.cards[3]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
+    setFilteredRestaurant(json?.data?.cards[3]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
+  };
+
+
+  const onLineStatus=useOnlineStatus();
+
+  if(onLineStatus===false){
+    return( 
+    <h1>
+      Looks like you are offline!! Please check your internet connection;
+    </h1>)
   };
 
   // this is conditional rendering
@@ -72,16 +87,17 @@ const Body = () => {
  
   return listOfRestaurants.length ===0 ? <Shimmer/> : (
     <div className="body">
-      <div className="filter">
-        <div className="search">
+      <div className="filter flex">
+        <div className="search m-4 p-4">
           <input 
            type="text" 
-           className="search-box" 
+           className="border border-solid border-black" 
            value={searchText} 
            onChange={(e)=>{ 
             setSearchText(e.target.value); 
            }}/>
-          <button onClick={()=>{
+          <button className="px-4 py-2 bg-green-100 m-4 rounded-lg"
+          onClick={()=>{
             // filter the restaurant cards and update the UI
             // search text
             console.log(searchText);
@@ -93,8 +109,9 @@ const Body = () => {
             setFilteredRestaurant(filteredRestaurant);
           }}>Search</button>
         </div>
-        <button
-         className="filter-btn"
+        <div className="search m-4 p-4 flex items-center">
+           <button
+         className="px-4 py-2 bg-gray-50 rounded-lg"
          onClick={()=>{
           // filter logic
           const filteredList=listOfRestaurants.filter(
@@ -105,8 +122,10 @@ const Body = () => {
         >
           Top Rated Restaurants
         </button>
+        </div>
+       
       </div>
-      <div className="res-container">
+      <div className="flex flex-wrap">
 
         {/* <RestaurantCard 
          resData={resList[0]}
@@ -120,7 +139,9 @@ const Body = () => {
         <Link 
         key={restaurant.info.id}
         to={"/restaurants/"+restaurant.info.id}> 
-        <RestaurantCard  resData={restaurant} />
+        {
+          restaurant.info.veg?<RestaurantCardVeg resData={restaurant}/>:<RestaurantCard  resData={restaurant} />
+        }
          </Link> 
         ))}
   
